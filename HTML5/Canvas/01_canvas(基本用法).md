@@ -1,4 +1,4 @@
-###canvas基本用法
+## canvas基本用法
 	1.什么是canvas(画布)
 			<canvas> 是 HTML5 新增的元素，可用于通过使用JavaScript中的脚本来绘制图形
 		例如，它可以用于绘制图形，创建动画。<canvas> 最早由Apple引入WebKit
