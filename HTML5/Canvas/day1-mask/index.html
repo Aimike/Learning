@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>马赛克效果</title>
+	<meta charset="utf-8">
+	<style type="text/css">
+	    *{
+	    	margin: 0;
+	    	padding: 0;
+	    }
+	    html,body{
+	    	width: 100%;
+	    	height: 100%;
+	    	overflow: hidden;
+	    }
+		#wrap{
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			background-color: pink;
+		}
+		#mask{
+			position: absolute;
+			left: 0;
+			right: 0;
+			top: 0;
+			bottom: 0;
+			margin: auto;
+			background-color: gray;
+		}
+	</style>
+</head>
+<body>
+<div id="wrap">
+	<canvas id="mask"></canvas>
+</div>
+</body>
+<script type="text/javascript">
+	var canvas = document.querySelector('#mask');
+	var ctx = canvas.getContext('2d');
+	var size = 5;//马赛克矩形
+	var img = new Image();
+	img.src = "2.jpg";
+    img.onload = function () {
+    	// body...
+        canvas.width = img.width*2;
+	    canvas.height = img.height;
+	    ctx.drawImage(img,0,0);
+        
+
+
+        //
+	    var oldI = ctx.getImageData(0,0,img.width,img.height);
+	    var newI = ctx.createImageData(img.width,img.height);
+
+	    for(var i = 0;i<oldI.width/size;i++){
+	    	for(var j = 0;j<oldI.height/size;j++){
+	    		var color = getPxInfo(oldI,i*size+Math.floor(Math.random()*size),j*size+Math.floor(Math.random()*size));
+
+	    		for(var a =0;a < size;a++){
+	    			for(var b = 0;b < size;b++){
+	    				setPxInfo(newI,i*size+a,j*size+b,color);
+	    			}
+	    		}
+	    		
+	    	}
+	    }
+	    ctx.putImageData(newI,img.width,0);
+    }
+    function getPxInfo(imgdata,x,y){
+    	var color = [];
+
+    	var data = imgdata.data;
+
+    	color[0] = data[(imgdata.width*y + x)*4];
+    	color[1] = data[(imgdata.width*y + x)*4+1];
+    	color[2] = data[(imgdata.width*y + x)*4+2];
+    	color[3] = data[(imgdata.width*y + x)*4+3];
+    	return color;
+    }
+
+    function setPxInfo(imgdata,x,y,color){
+    	var data = imgdata.data;
+    	data[(imgdata.width*y + x)*4] = color[0];
+    	data[(imgdata.width*y + x)*4+1] = color[1];
+    	data[(imgdata.width*y + x)*4+2] = color[2];
+    	data[(imgdata.width*y + x)*4+3] = color[3];
+    }
+
+</script>
+</html>
